@@ -10,6 +10,9 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import Login from './Login';
+import Register from './Register';
 
 function App() {
 
@@ -23,6 +26,8 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [cards, setCards] = React.useState([]);
   const [cardForDelete, setCardForDelete] = React.useState('');
+  const loggedIn = false;
+
   React.useEffect(() => {
     Promise.all([
       api.getUserInfo(),
@@ -35,7 +40,6 @@ function App() {
         console.log(err);
       })
   }, []);
-
   function handleEditProfileClick() {
     setEditProfilePopupOpen(true);
   }
@@ -138,11 +142,28 @@ function App() {
     }
   }
 
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page" onKeyDown={closePopupsOnEsc}>
-        <Header />
-        <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
+        <BrowserRouter>
+          <Header />
+          <Switch>
+            <Route path="/main">
+              <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/register">
+              <Register />
+            </Route>
+            <Route exact path="/">
+              {loggedIn ? <Redirect to="/main" /> : <Redirect to="/login" />}
+            </Route>
+          </Switch>
+        </BrowserRouter>
         <Footer />
         <EditProfilePopup onUpdateUser={handleUpdateUser} onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} isLoading={isLoading} />
         <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} isLoading={isLoading} />

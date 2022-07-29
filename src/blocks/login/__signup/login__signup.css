@@ -1,0 +1,17 @@
+.login__signup {
+  width: 358px;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+@media screen and (max-width: 605px) {
+  .login__signup {
+    width: 260px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
