@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Register() {
   const [email, setEmail] = React.useState('');
@@ -28,7 +28,6 @@ function Register() {
         <input className="login__input login__input_type_password" required id="password" name="password" type="password" value={password} onChange={handleChangePassword} placeholder="Пароль" />
         <button className="login__btn" type="submit">Зарегистрироваться</button>
       </form>
-
       <div className="login__signup">
         <p className="login__signup-text">Уже зарегистрированы?</p>
         <Link to="/login" className="login__link">Войти</Link>

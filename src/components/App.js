@@ -142,28 +142,24 @@ function App() {
     }
   }
 
-
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page" onKeyDown={closePopupsOnEsc}>
-        <BrowserRouter>
-          <Header />
-          <Switch>
-            <Route path="/main">
-              <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
-            </Route>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/register">
-              <Register />
-            </Route>
-            <Route exact path="/">
-              {loggedIn ? <Redirect to="/main" /> : <Redirect to="/login" />}
-            </Route>
-          </Switch>
-        </BrowserRouter>
+        <Header />
+        <Switch>
+          <Route path="/main">
+            <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/">
+            {loggedIn ? <Redirect to="/main" /> : <Redirect to="/login" />}
+          </Route>
+        </Switch>
         <Footer />
         <EditProfilePopup onUpdateUser={handleUpdateUser} onClose={handleCloseAllPopups} isOpen={isEditProfilePopupOpen} isLoading={isLoading} />
         <EditAvatarPopup onUpdateAvatar={handleUpdateAvatar} onClose={handleCloseAllPopups} isOpen={isEditAvatarPopupOpen} isLoading={isLoading} />
