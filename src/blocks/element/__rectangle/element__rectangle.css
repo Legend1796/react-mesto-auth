@@ -1,0 +1,7 @@
+.element__rectangle {
+  margin: 15px 20px 31px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}

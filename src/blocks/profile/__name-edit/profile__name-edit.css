@@ -1,0 +1,13 @@
+.profile__name-edit {
+  display: flex;
+  margin: auto;
+  vertical-align: text-bottom;
+  margin-left: 0;
+}
+
+@media screen and (max-width: 605px) {
+  .profile__name-edit {
+    margin: 0 auto 0;
+    margin-left: 50px;
+  }
+}

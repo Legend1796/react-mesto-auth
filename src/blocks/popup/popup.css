@@ -1,0 +1,19 @@
+.popup {
+  display: flex;
+  position: fixed;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility .3s, opacity .3s linear;
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.popup:hover {
+  cursor: pointer;
+}
