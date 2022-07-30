@@ -30,7 +30,7 @@ function Register() {
       </form>
       <div className="login__signup">
         <p className="login__signup-text">Уже зарегистрированы?</p>
-        <Link to="/login" className="login__link">Войти</Link>
+        <Link to="/sign-in" className="login__link">Войти</Link>
       </div>
     </div>
 

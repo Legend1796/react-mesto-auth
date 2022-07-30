@@ -10,7 +10,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 
@@ -26,7 +26,8 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [cards, setCards] = React.useState([]);
   const [cardForDelete, setCardForDelete] = React.useState('');
-  const loggedIn = false;
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState('m_igor97@mail.com');
 
   React.useEffect(() => {
     Promise.all([
@@ -145,19 +146,19 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page" onKeyDown={closePopupsOnEsc}>
-        <Header />
+        <Header loggedIn={loggedIn} userEmail={userEmail} />
         <Switch>
           <Route path="/main">
             <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
           </Route>
-          <Route path="/register">
+          <Route path="/sign-up">
             <Register />
           </Route>
-          <Route path="/login">
+          <Route path="/sign-in">
             <Login />
           </Route>
           <Route exact path="/">
-            {loggedIn ? <Redirect to="/main" /> : <Redirect to="/login" />}
+            {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}
           </Route>
         </Switch>
         <Footer />
