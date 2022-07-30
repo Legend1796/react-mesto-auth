@@ -26,7 +26,7 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [cards, setCards] = React.useState([]);
   const [cardForDelete, setCardForDelete] = React.useState('');
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(true);
   const [userEmail, setUserEmail] = React.useState('m_igor97@mail.com');
 
   React.useEffect(() => {

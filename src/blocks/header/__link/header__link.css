@@ -7,6 +7,12 @@
   margin-left: 24px;
 }
 
+@media screen and (max-width: 900px) {
+  .header__link {
+    margin-right: 27px;
+  }
+}
+
 .header__link:hover {
   transition: opacity .2s linear;
   opacity: .6;
