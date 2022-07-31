@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import * as auth from '../utils/auth';
 
-function Register() {
+function Register({ onLoggedIn, setUserEmail }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-
+  const history = useHistory();
 
   function handleChangeEmail(e) {
     setEmail(e.target.value);
@@ -16,9 +17,19 @@ function Register() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // здесь обрабатываем вход в систему
+    onRegister(email, password);
   }
 
+  function onRegister(email, password) {
+    auth.register(email, password)
+      .then((res) => {
+        if (res) {
+          setUserEmail(email);
+          onLoggedIn(true);
+          history.push('/main');
+        }
+      })
+  }
 
   return (
     <div className="login">

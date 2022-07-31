@@ -1,19 +1,21 @@
 import React from 'react';
 import '../index.css';
-import Header from './Header';
-import Footer from './Footer';
-import Main from './Main';
-import ConfirmationPopup from './ConfirmationPopup';
-import ImagePopup from './ImagePopup';
-import api from '../utils/api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import ConfirmationPopup from './ConfirmationPopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import ImagePopup from './ImagePopup';
+import Header from './Header';
+import Footer from './Footer';
+import Main from './Main';
+import api from '../utils/api';
 import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from './ProtectedRoute';
+
 function App() {
 
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
@@ -145,20 +147,26 @@ function App() {
       handleCloseAllPopups();
     }
   }
+  function handleOnLoggedIn(status) {
+    setLoggedIn(status);
+  }
+
+  function handleSetUserEmail(email) {
+    setUserEmail(email);
+    console.log('userEmail: ' + userEmail);
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page" onKeyDown={closePopupsOnEsc}>
         <Header loggedIn={loggedIn} userEmail={userEmail} />
         <Switch>
-          <Route path="/main">
-            <Main cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
-          </Route>
+          <ProtectedRoute path="/main" loggedIn={loggedIn} component={Main} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
           <Route path="/sign-up">
-            <Register />
+            <Register onLoggedIn={handleOnLoggedIn} setUserEmail={handleSetUserEmail} />
           </Route>
           <Route path="/sign-in">
-            <Login />
+            <Login onLoggedIn={handleOnLoggedIn} setUserEmail={handleSetUserEmail} />
           </Route>
           <Route exact path="/">
             {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}

@@ -1,9 +1,12 @@
 import React from 'react';
-// import { withRouter } from 'react-router-dom';
+import * as auth from '../utils/auth';
+import { useHistory } from 'react-router-dom';
 
-function Login() {
+function Login({ onLoggedIn, setUserEmail }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const history = useHistory();
+
   function handleChangeEmail(e) {
     setEmail(e.target.value);
 
@@ -14,7 +17,17 @@ function Login() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // здесь обрабатываем вход в систему
+    onLoginIn(email, password);
+  }
+
+  function onLoginIn(email, password) {
+    auth.autorise(email, password)
+      .then((res) => {
+        setUserEmail(email);
+        localStorage.setItem('jwt', res.token);
+        onLoggedIn(true);
+        history.push('/main');
+      })
   }
 
   return (
