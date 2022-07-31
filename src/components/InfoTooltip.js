@@ -11,3 +11,5 @@ function InfoTooltip({ isOpen, onClose, title, image, name }) {
     </ div >
   )
 }
+
+export default InfoTooltip;

@@ -13,7 +13,7 @@ import AddPlacePopup from './AddPlacePopup';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
-
+import InfoTooltip from './InfoTooltip';
 function App() {
 
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
@@ -21,6 +21,8 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
   const [isConfirmationPopupOpen, setConfirmationPopupOpen] = React.useState(false);
   const [isCardPopupOpen, setCardPopupOpen] = React.useState(false);
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
+  const [isAccesMessage, setAccesMessage] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
   const [currentUser, setUserInfo] = React.useState({ name: '', about: '', avatar: '' });
   const [isLoading, setIsLoading] = React.useState(false);
@@ -56,6 +58,7 @@ function App() {
     setEditAvatarPopupOpen(false);
     setCardPopupOpen(false);
     setConfirmationPopupOpen(false);
+    setInfoTooltipOpen(false);
   }
   function handleCardClick(card) {
     setSelectedCard({ name: card.name, link: card.link });
@@ -167,6 +170,7 @@ function App() {
         <AddPlacePopup onAddCard={handleAddPlaceSubmit} onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} isLoading={isLoading} />
         <ConfirmationPopup onDeleteCard={handleDeleteCard} onClose={handleCloseAllPopups} isOpen={isConfirmationPopupOpen} name="delete-card" title="Вы уверены?" buttonText="Да" />
         <ImagePopup isOpen={isCardPopupOpen} onClose={handleCloseAllPopups} cardInfo={selectedCard} />
+        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={handleCloseAllPopups} name="access-message" title={isAccesMessage} />
       </div>
     </CurrentUserContext.Provider>
   );
