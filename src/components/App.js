@@ -1,9 +1,10 @@
 import React from 'react';
 import '../index.css';
+import * as auth from '../utils/auth';
 import allowedImage from '../images/Allowed.svg'
 import deniedImage from '../images/Denied.svg'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import ConfirmationPopup from './ConfirmationPopup';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -35,6 +36,7 @@ function App() {
   const [cardForDelete, setCardForDelete] = React.useState('');
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [userEmail, setUserEmail] = React.useState('m_igor97@mail.com');
+  const history = useHistory();
 
   React.useEffect(() => {
     Promise.all([
@@ -43,6 +45,7 @@ function App() {
       .then(([info, cards]) => {
         setUserInfo(info);
         setCards(cards);
+        tokenCheck();
       })
       .catch((err) => {
         console.log(err);
@@ -153,16 +156,7 @@ function App() {
   function handleOnLoggedIn(status) {
     setLoggedIn(status);
     setInfoTooltipOpen(true);
-    if (loggedIn) {
-      console.log(allowedImage);
-      setAccesMessage('Вы успешно зарегистрировались!');
-      setAccessImage(allowedImage);
-    }
-  }
-
-  function handleSetUserEmail(email) {
-    setUserEmail(email);
-    console.log('userEmail: ' + userEmail);
+    tokenCheck();
   }
 
   function handleAsseccDenied() {
@@ -171,17 +165,41 @@ function App() {
     setAccessImage(deniedImage);
   }
 
+  function handleExitProfile() {
+    setLoggedIn(false);
+    localStorage.removeItem('jwt');
+  }
+
+  function tokenCheck() {
+    if (localStorage.getItem('jwt')) {
+      const jwt = localStorage.getItem('jwt');
+      if (jwt) {
+        auth.getContent(jwt)
+          .then((res) => {
+            if (res) {
+              setUserEmail(res.data.email);
+              setLoggedIn(true);
+              setAccesMessage('Вы успешно зарегистрировались!');
+              setAccessImage(allowedImage);
+              history.push("/main");
+            }
+          });
+      }
+    }
+
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page" onKeyDown={closePopupsOnEsc}>
-        <Header loggedIn={loggedIn} userEmail={userEmail} />
+        <Header loggedIn={loggedIn} userEmail={userEmail} exitProfile={handleExitProfile} />
         <Switch>
           <ProtectedRoute path="/main" loggedIn={loggedIn} component={Main} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
           <Route path="/sign-up">
-            <Register onLoggedIn={handleOnLoggedIn} setUserEmail={handleSetUserEmail} />
+            <Register onLoggedIn={handleOnLoggedIn} onAsseccDenied={handleAsseccDenied} />
           </Route>
           <Route path="/sign-in">
-            <Login onLoggedIn={handleOnLoggedIn} setUserEmail={handleSetUserEmail} onAsseccDenied={handleAsseccDenied} />
+            <Login onLoggedIn={handleOnLoggedIn} onAsseccDenied={handleAsseccDenied} />
           </Route>
           <Route exact path="/">
             {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}

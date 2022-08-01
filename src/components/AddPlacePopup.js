@@ -22,9 +22,7 @@ function AddPlacePopup({ isOpen, onClose, onAddCard, isLoading }) {
     setValidLink(e.target.validity.valid);
     if (e.target.validity.valid) {
       setValidationMessageLink('');
-    } else {
-      setValidationMessageLink(e.target.validationMessage);
-    }
+    } else { setValidationMessageLink(e.target.validationMessage) }
   }
   function handleSubmit() {
     onAddCard({

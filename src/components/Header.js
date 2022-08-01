@@ -1,7 +1,8 @@
 import logo from '../images/logo.svg';
 import { useLocation, Link } from 'react-router-dom';
-function Header({ loggedIn, userEmail }) {
+function Header({ loggedIn, userEmail, exitProfile }) {
   const location = useLocation();
+
   return (
     <header className="header">
       <img className="header__logo" src={logo} alt="Логотип сайта" />
@@ -9,7 +10,7 @@ function Header({ loggedIn, userEmail }) {
         <nav className="header__nav">
           <button className="header__menu" />
           <p className="header__email">{userEmail}</p>
-          <Link className="header__link" to="/sign-in">Выйти</Link>
+          <Link onClick={exitProfile} className="header__link" to="/sign-in">Выйти</Link>
         </nav>
       }
       {!loggedIn &&

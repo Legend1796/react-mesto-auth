@@ -18,13 +18,11 @@ export const register = (email, password) => {
       }
     })
     .then((res) => {
-      console.log('res: ' + res);
       return res;
     })
 };
 
 export const autorise = (email, password) => {
-  console.log('email: ' + email + ' password: ' + password)
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
@@ -45,3 +43,15 @@ export const autorise = (email, password) => {
       return res;
     })
 };
+
+export const getContent = (token) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+    .then(res => res.json())
+    .then(data => data)
+}
