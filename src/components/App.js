@@ -153,21 +153,40 @@ function App() {
       handleCloseAllPopups();
     }
   }
-  function handleOnLoggedIn(status) {
-    setLoggedIn(status);
-    setInfoTooltipOpen(true);
-    tokenCheck();
-  }
-
-  function handleAsseccDenied() {
-    setInfoTooltipOpen(true);
+  function onAsseccDenied() {
     setAccesMessage('Что-то пошло не так!\nПопробуйте ещё раз.');
     setAccessImage(deniedImage);
+    setInfoTooltipOpen(true);
   }
-
+  function onAsseccAllowed() {
+    setAccesMessage('Вы успешно зарегистрировались!');
+    setAccessImage(allowedImage);
+    setInfoTooltipOpen(true);
+  }
   function handleExitProfile() {
     setLoggedIn(false);
     localStorage.removeItem('jwt');
+  }
+
+  function onRegister(email, password) {
+    auth.register(email, password)
+      .then((res) => {
+        setUserEmail(res.data.email);
+        setLoggedIn(true);
+        onAsseccAllowed();
+        history.push('/main');
+      })
+      .catch(() => onAsseccDenied());
+  }
+
+  function onLoginIn(email, password) {
+    auth.autorise(email, password)
+      .then((res) => {
+        localStorage.setItem('jwt', res.token);
+        tokenCheck();
+        onAsseccAllowed();
+      })
+      .catch(() => onAsseccDenied());
   }
 
   function tokenCheck() {
@@ -179,14 +198,11 @@ function App() {
             if (res) {
               setUserEmail(res.data.email);
               setLoggedIn(true);
-              setAccesMessage('Вы успешно зарегистрировались!');
-              setAccessImage(allowedImage);
               history.push("/main");
             }
           });
       }
     }
-
   }
 
   return (
@@ -196,10 +212,10 @@ function App() {
         <Switch>
           <ProtectedRoute path="/main" loggedIn={loggedIn} component={Main} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />
           <Route path="/sign-up">
-            <Register onLoggedIn={handleOnLoggedIn} onAsseccDenied={handleAsseccDenied} />
+            <Register onRegister={onRegister} />
           </Route>
           <Route path="/sign-in">
-            <Login onLoggedIn={handleOnLoggedIn} onAsseccDenied={handleAsseccDenied} />
+            <Login onLoginIn={onLoginIn} />
           </Route>
           <Route exact path="/">
             {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}

@@ -1,7 +1,6 @@
 import React from 'react';
-import * as auth from '../utils/auth';
 
-function Login({ onLoggedIn, onAsseccDenied }) {
+function Login({ onLoginIn }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isValidPassword, setValidPassword] = React.useState(false);
@@ -28,18 +27,6 @@ function Login({ onLoggedIn, onAsseccDenied }) {
   function handleSubmit(e) {
     e.preventDefault();
     onLoginIn(email, password);
-  }
-
-  function onLoginIn(email, password) {
-    auth.autorise(email, password)
-      .then((res) => {
-
-        localStorage.setItem('jwt', res.token);
-        onLoggedIn(true);
-      })
-      .catch((res) => {
-        onAsseccDenied(res);
-      });
   }
 
   React.useEffect(() => {

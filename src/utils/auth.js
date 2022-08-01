@@ -4,7 +4,8 @@ export const register = (email, password) => {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'https://auth.nomoreparties.co/signin'
     },
     body: JSON.stringify({ password, email })
   })
@@ -26,7 +27,8 @@ export const autorise = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:3000'
     },
     body: JSON.stringify({ password, email })
   })

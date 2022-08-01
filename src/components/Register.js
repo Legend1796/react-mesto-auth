@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import * as auth from '../utils/auth';
 
-function Register({ onLoggedIn, onAsseccDenied }) {
+function Register({ onRegister }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isValidPassword, setValidPassword] = React.useState(false);
@@ -29,25 +28,6 @@ function Register({ onLoggedIn, onAsseccDenied }) {
   function handleSubmit(e) {
     e.preventDefault();
     onRegister(email, password);
-  }
-
-  function onRegister(email, password) {
-    auth.register(email, password)
-      .then((res) => {
-        onLoginIn(res.data.email, password);
-      })
-      .catch((err) => console.log(err));
-  }
-
-  function onLoginIn(email, password) {
-    auth.autorise(email, password)
-      .then((res) => {
-        localStorage.setItem('jwt', res.token);
-        onLoggedIn(true);
-      })
-      .catch((res) => {
-        onAsseccDenied(res);
-      });
   }
 
   React.useEffect(() => {
