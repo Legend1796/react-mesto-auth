@@ -1,0 +1,10 @@
+.popup__access-image {
+  margin: 60px auto 0;
+}
+
+@media screen and (max-width: 605px) {
+  .popup__text_access-container {
+    margin-top: 50px;
+    width: 244px;
+  }
+}

@@ -21,7 +21,6 @@ export const register = (email, password) => {
       console.log('res: ' + res);
       return res;
     })
-    .catch((err) => console.log(err));
 };
 
 export const autorise = (email, password) => {
@@ -45,5 +44,4 @@ export const autorise = (email, password) => {
     .then((res) => {
       return res;
     })
-    .catch((err) => console.log(err));
 };

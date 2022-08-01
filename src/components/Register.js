@@ -29,6 +29,7 @@ function Register({ onLoggedIn, setUserEmail }) {
           history.push('/main');
         }
       })
+      .catch((err) => console.log(err));
   }
 
   return (

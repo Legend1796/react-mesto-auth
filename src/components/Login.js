@@ -2,7 +2,7 @@ import React from 'react';
 import * as auth from '../utils/auth';
 import { useHistory } from 'react-router-dom';
 
-function Login({ onLoggedIn, setUserEmail }) {
+function Login({ onLoggedIn, setUserEmail, onAsseccDenied }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const history = useHistory();
@@ -28,6 +28,9 @@ function Login({ onLoggedIn, setUserEmail }) {
         onLoggedIn(true);
         history.push('/main');
       })
+      .catch((res) => {
+        onAsseccDenied(res);
+      });
   }
 
   return (

@@ -1,5 +1,7 @@
 import React from 'react';
 import '../index.css';
+import allowedImage from '../images/Allowed.svg'
+import deniedImage from '../images/Denied.svg'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import ConfirmationPopup from './ConfirmationPopup';
@@ -24,7 +26,8 @@ function App() {
   const [isConfirmationPopupOpen, setConfirmationPopupOpen] = React.useState(false);
   const [isCardPopupOpen, setCardPopupOpen] = React.useState(false);
   const [isInfoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
-  const [isAccesMessage, setAccesMessage] = React.useState(false);
+  const [accesMessage, setAccesMessage] = React.useState(false);
+  const [accessImage, setAccessImage] = React.useState('');
   const [selectedCard, setSelectedCard] = React.useState({ name: '', link: '' });
   const [currentUser, setUserInfo] = React.useState({ name: '', about: '', avatar: '' });
   const [isLoading, setIsLoading] = React.useState(false);
@@ -149,11 +152,23 @@ function App() {
   }
   function handleOnLoggedIn(status) {
     setLoggedIn(status);
+    setInfoTooltipOpen(true);
+    if (loggedIn) {
+      console.log(allowedImage);
+      setAccesMessage('Вы успешно зарегистрировались!');
+      setAccessImage(allowedImage);
+    }
   }
 
   function handleSetUserEmail(email) {
     setUserEmail(email);
     console.log('userEmail: ' + userEmail);
+  }
+
+  function handleAsseccDenied() {
+    setInfoTooltipOpen(true);
+    setAccesMessage('Что-то пошло не так!\nПопробуйте ещё раз.');
+    setAccessImage(deniedImage);
   }
 
   return (
@@ -166,7 +181,7 @@ function App() {
             <Register onLoggedIn={handleOnLoggedIn} setUserEmail={handleSetUserEmail} />
           </Route>
           <Route path="/sign-in">
-            <Login onLoggedIn={handleOnLoggedIn} setUserEmail={handleSetUserEmail} />
+            <Login onLoggedIn={handleOnLoggedIn} setUserEmail={handleSetUserEmail} onAsseccDenied={handleAsseccDenied} />
           </Route>
           <Route exact path="/">
             {loggedIn ? <Redirect to="/main" /> : <Redirect to="/sign-in" />}
@@ -178,7 +193,7 @@ function App() {
         <AddPlacePopup onAddCard={handleAddPlaceSubmit} onClose={handleCloseAllPopups} isOpen={isAddPlacePopupOpen} isLoading={isLoading} />
         <ConfirmationPopup onDeleteCard={handleDeleteCard} onClose={handleCloseAllPopups} isOpen={isConfirmationPopupOpen} name="delete-card" title="Вы уверены?" buttonText="Да" />
         <ImagePopup isOpen={isCardPopupOpen} onClose={handleCloseAllPopups} cardInfo={selectedCard} />
-        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={handleCloseAllPopups} name="access-message" title={isAccesMessage} />
+        <InfoTooltip isOpen={isInfoTooltipOpen} onClose={handleCloseAllPopups} name="access-message" title={accesMessage} image={accessImage} />
       </div>
     </CurrentUserContext.Provider>
   );
