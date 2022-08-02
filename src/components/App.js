@@ -1,6 +1,6 @@
 import React from 'react';
 import '../index.css';
-// import * as auth from '../utils/auth';
+import * as auth from '../utils/auth';
 import allowedImage from '../images/Allowed.svg'
 import deniedImage from '../images/Denied.svg'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -14,7 +14,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Main from './Main';
 import api from '../utils/api';
-import auth from '../utils/api';
+// import auth from '../utils/api';
 import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
