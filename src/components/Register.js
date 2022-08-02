@@ -1,61 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useFormAndValidation } from '../hooks/useFormAndValidation';
+import Form from './Form';
 
 function Register({ onRegister }) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [isValidPassword, setIsValidPassword] = React.useState(false);
-  const [isValidLink, setIsValidLink] = React.useState(false);
-  const [validationMessagePassword, setValidationMessagePassword] = React.useState('');
-  const [validationMessageLink, setValidationMessageLink] = React.useState('');
-  const [isActiveSubmitButton, setIsActiveSubmitButton] = React.useState(false);
+  const { values, handleChange, errors, isValid, resetErrors } = useFormAndValidation({})
 
-  function handleChangeEmail(e) {
-    setEmail(e.target.value);
-    setIsValidLink(e.target.validity.valid);
-    if (e.target.validity.valid) {
-      setValidationMessageLink('');
-    } else { setValidationMessageLink(e.target.validationMessage) }
-
-  }
-  function handleChangePassword(e) {
-    setPassword(e.target.value);
-    setIsValidPassword(e.target.validity.valid);
-    if (e.target.validity.valid) {
-      setValidationMessagePassword('');
-    } else { setValidationMessagePassword(e.target.validationMessage) }
-  }
   function handleSubmit(e) {
     e.preventDefault();
-    onRegister(email, password);
+    resetErrors({ email: '', password: '' });
+    onRegister(values);
   }
-
-  React.useEffect(() => {
-    setEmail('');
-    setPassword('');
-    setIsValidPassword(true);
-    setIsValidLink(true);
-    setValidationMessagePassword('');
-    setValidationMessageLink('');
-    setIsActiveSubmitButton(false);
-  }, []);
-
-  React.useEffect(() => {
-    if (validationMessagePassword || validationMessageLink) {
-      setIsActiveSubmitButton(false);
-    } else { setIsActiveSubmitButton(true) }
-  }, [validationMessagePassword, validationMessageLink]);
 
   return (
     <div className="login">
       <p className="login__title">Регистрация</p>
-      <form onSubmit={handleSubmit} className="login__form">
-        <input className="login__input login__input_type_email" required id="email" name="email" type="email" value={email} onChange={handleChangeEmail} placeholder="Email" />
-        <span className={`login__input-error url-input-error ${!isValidLink ? 'login__input-error_active popup__input_type_error' : ''}`}>{validationMessageLink}</span>
-        <input className="login__input login__input_type_password" required id="password" name="password" type="password" value={password} onChange={handleChangePassword} placeholder="Пароль" />
-        <span className={`login__input-error password-input-error ${!isValidPassword ? 'login__input-error_active popup__input_type_error' : ''}`}>{validationMessagePassword}</span>
-        <button className={`login__btn ${!isActiveSubmitButton ? 'popup__save-btn_disabled' : ''}`} type="submit" disabled={!isActiveSubmitButton}>Зарегистрироваться</button>
-      </form>
+      <Form onSubmit={handleSubmit} name="login" isActiveSubmitButton={isValid} submitButtonText="Зарегистрироваться" >
+        <input className="login__input login__input_type_email" id="email" name="email" type="email" value={values.email || ''} onChange={handleChange} placeholder="Email" required />
+        <span className={`login__input-error url-input-error ${!isValid ? 'login__input-error_active popup__input_type_error' : ''}`}>{errors.email}</span>
+        <input className="login__input login__input_type_password" id="password" name="password" type="password" value={values.password || ''} onChange={handleChange} placeholder="Пароль" minLength="6" maxLength="20" required />
+        <span className={`login__input-error password-input-error ${!isValid ? 'login__input-error_active popup__input_type_error' : ''}`}>{errors.password}</span>
+      </Form>
       <div className="login__signup">
         <p className="login__signup-text">Уже зарегистрированы?</p>
         <Link to="/sign-in" className="login__link">Войти</Link>

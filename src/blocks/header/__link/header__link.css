@@ -5,6 +5,7 @@
   text-decoration: none;
   opacity: 1;
   margin-left: 24px;
+  background-color: black;
 }
 
 @media screen and (max-width: 900px) {

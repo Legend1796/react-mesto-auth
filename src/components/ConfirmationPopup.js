@@ -6,7 +6,7 @@ function ConfirmationPopup({ name, isOpen, onClose, buttonText, title, onDeleteC
   }
 
   return (
-    <PopupWithForm eventSubmit={handleSubmit} name={name} title={title} buttonText={buttonText} onClose={onClose} isOpen={isOpen} />
+    <PopupWithForm eventSubmit={handleSubmit} name={name} title={title} submitButtonText={buttonText} onClose={onClose} isOpen={isOpen} isActiveSubmitButton={true} />
   )
 }
 

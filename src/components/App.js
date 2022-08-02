@@ -152,7 +152,7 @@ function App() {
     localStorage.removeItem('jwt');
   }
 
-  function onRegister(email, password) {
+  function onRegister({ email, password }) {
     auth.register(email, password)
       .then((res) => {
         setUserEmail(res.data.email);
@@ -163,7 +163,7 @@ function App() {
       .catch(() => onAsseccDenied());
   }
 
-  function onLoginIn(email, password) {
+  function onLoginIn({ email, password }) {
     auth.autorise(email, password)
       .then((res) => {
         localStorage.setItem('jwt', res.token);
