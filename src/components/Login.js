@@ -26,7 +26,7 @@ function Login({ onLoginIn }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    onLoginIn(email, password);
+    onLoginIn({ email, password });
   }
 
   React.useEffect(() => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import '../index.css';
-import * as auth from '../utils/auth';
+// import * as auth from '../utils/auth';
 import allowedImage from '../images/Allowed.svg'
 import deniedImage from '../images/Denied.svg'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -14,6 +14,7 @@ import Header from './Header';
 import Footer from './Footer';
 import Main from './Main';
 import api from '../utils/api';
+import auth from '../utils/api';
 import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
@@ -48,9 +49,7 @@ function App() {
         setCards(cards);
         tokenCheck();
       })
-      .catch((err) => {
-        console.log(err);
-      })
+      .catch((err) => console.log(err));
   }, []);
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
@@ -80,9 +79,7 @@ function App() {
         setUserInfo(res);
         handleCloseAllPopups();
       })
-      .catch((err) => {
-        console.log('EditProfilePopup:', err);
-      })
+      .catch((err) => console.log(err))
       .finally(() => {
         setTimeout(() => setIsLoading(false), 2000);
       })
@@ -94,9 +91,7 @@ function App() {
         setUserInfo(res);
         handleCloseAllPopups();
       })
-      .catch((err) => {
-        console.log('EditProfilePopup:', err);
-      })
+      .catch((err) => console.log(err))
       .finally(() => {
         setTimeout(() => setIsLoading(false), 2000);
       })
@@ -108,17 +103,13 @@ function App() {
         .then((newCard) => {
           setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => console.log(err));
     } else {
       api.changeLikeCardStatus(cardInfo._id, 'DELETE')
         .then((newCard) => {
           setCards((state) => state.map((c) => c._id === cardInfo._id ? newCard : c));
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => console.log(err));
     }
   }
   function handleCardDelete(cardInfo) {
@@ -131,9 +122,7 @@ function App() {
         setCards((state) => state.filter(c => c._id !== cardForDelete._id));
         handleCloseAllPopups();
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(err))
   }
   function handleAddPlaceSubmit(cardInfo) {
     setIsLoading(true);
@@ -142,9 +131,7 @@ function App() {
         setCards([newCard, ...cards]);
         handleCloseAllPopups();
       })
-      .catch((err) => {
-        console.log('EditProfilePopup:', err);
-      })
+      .catch((err) => console.log(err))
       .finally(() => {
         setTimeout(() => setIsLoading(false), 2000);
       })
@@ -197,7 +184,8 @@ function App() {
               setLoggedIn(true);
               history.push("/main");
             }
-          });
+          })
+          .catch((err) => console.log(err));
       }
     }
   }
