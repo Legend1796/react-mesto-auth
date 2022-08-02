@@ -21,11 +21,11 @@ import ProtectedRoute from './ProtectedRoute';
 
 function App() {
 
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [isConfirmationPopupOpen, setConfirmationPopupOpen] = React.useState(false);
-  const [isCardPopupOpen, setCardPopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [isConfirmationPopupOpen, setIsConfirmationPopupOpen] = React.useState(false);
+  const [isCardPopupOpen, setIsCardPopupOpen] = React.useState(false);
   const [isInfoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
   const [accesMessage, setAccesMessage] = React.useState(false);
   const [accessImage, setAccessImage] = React.useState('');
@@ -37,6 +37,7 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [userEmail, setUserEmail] = React.useState('m_igor97@mail.com');
   const history = useHistory();
+  const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard.link || isInfoTooltipOpen;
 
   React.useEffect(() => {
     Promise.all([
@@ -52,25 +53,25 @@ function App() {
       })
   }, []);
   function handleEditProfileClick() {
-    setEditProfilePopupOpen(true);
+    setIsEditProfilePopupOpen(true);
   }
   function handleAddPlaceClick() {
-    setAddPlacePopupOpen(true);
+    setIsAddPlacePopupOpen(true);
   }
   function handleEditAvatarClick() {
-    setEditAvatarPopupOpen(true);
+    setIsEditAvatarPopupOpen(true);
   }
   function handleCloseAllPopups() {
-    setEditProfilePopupOpen(false);
-    setAddPlacePopupOpen(false);
-    setEditAvatarPopupOpen(false);
-    setCardPopupOpen(false);
-    setConfirmationPopupOpen(false);
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+    setIsCardPopupOpen(false);
+    setIsConfirmationPopupOpen(false);
     setInfoTooltipOpen(false);
   }
   function handleCardClick(card) {
     setSelectedCard({ name: card.name, link: card.link });
-    setCardPopupOpen(true);
+    setIsCardPopupOpen(true);
   }
   function handleUpdateUser(userData) {
     setIsLoading(true);
@@ -83,7 +84,7 @@ function App() {
         console.log('EditProfilePopup:', err);
       })
       .finally(() => {
-        setTimeout(setIsLoading(false), 2000);
+        setTimeout(() => setIsLoading(false), 2000);
       })
   }
   function handleUpdateAvatar(newAvatar) {
@@ -97,7 +98,7 @@ function App() {
         console.log('EditProfilePopup:', err);
       })
       .finally(() => {
-        setTimeout(setIsLoading(false), 2000);
+        setTimeout(() => setIsLoading(false), 2000);
       })
   }
   function handleCardLike(cardInfo) {
@@ -121,18 +122,18 @@ function App() {
     }
   }
   function handleCardDelete(cardInfo) {
-    setConfirmationPopupOpen(true);
+    setIsConfirmationPopupOpen(true);
     setCardForDelete(cardInfo);
   }
   function handleDeleteCard() {
     api.deleteCard(cardForDelete._id)
       .then(() => {
         setCards((state) => state.filter(c => c._id !== cardForDelete._id));
+        handleCloseAllPopups();
       })
       .catch((err) => {
         console.log(err);
       });
-    handleCloseAllPopups();
   }
   function handleAddPlaceSubmit(cardInfo) {
     setIsLoading(true);
@@ -145,14 +146,10 @@ function App() {
         console.log('EditProfilePopup:', err);
       })
       .finally(() => {
-        setTimeout(setIsLoading(false), 2000);
+        setTimeout(() => setIsLoading(false), 2000);
       })
   }
-  function closePopupsOnEsc(e) {
-    if (e.key === 'Escape') {
-      handleCloseAllPopups();
-    }
-  }
+
   function onAsseccDenied() {
     setAccesMessage('Что-то пошло не так!\nПопробуйте ещё раз.');
     setAccessImage(deniedImage);
@@ -205,9 +202,24 @@ function App() {
     }
   }
 
+  React.useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === 'Escape') {
+        handleCloseAllPopups();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener('keydown', closeByEscape);
+      return () => {
+        document.removeEventListener('keydown', closeByEscape);
+      }
+    }
+  }, [isOpen])
+
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page" onKeyDown={closePopupsOnEsc}>
+      <div className="page">
         <Header loggedIn={loggedIn} userEmail={userEmail} exitProfile={handleExitProfile} />
         <Switch>
           <ProtectedRoute path="/main" loggedIn={loggedIn} component={Main} cards={cards} onCardLike={handleCardLike} onCardDelete={handleCardDelete} onCardClick={handleCardClick} onEditProfile={handleEditProfileClick} isAddPlacePopupOpen={handleAddPlaceClick} isEditAvatarPopupOpen={handleEditAvatarClick} />

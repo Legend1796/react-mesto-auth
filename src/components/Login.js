@@ -3,22 +3,22 @@ import React from 'react';
 function Login({ onLoginIn }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [isValidPassword, setValidPassword] = React.useState(false);
-  const [isValidLink, setValidLink] = React.useState(false);
+  const [isValidPassword, setIsValidPassword] = React.useState(false);
+  const [isValidLink, setIsValidLink] = React.useState(false);
   const [validationMessagePassword, setValidationMessagePassword] = React.useState('');
   const [validationMessageLink, setValidationMessageLink] = React.useState('');
-  const [isActiveSubmitButton, setActiveSubmitButton] = React.useState(false);
+  const [isActiveSubmitButton, setIsActiveSubmitButton] = React.useState(false);
 
   function handleChangeEmail(e) {
     setEmail(e.target.value);
-    setValidLink(e.target.validity.valid);
+    setIsValidLink(e.target.validity.valid);
     if (e.target.validity.valid) {
       setValidationMessageLink('');
     } else { setValidationMessageLink(e.target.validationMessage) }
   }
   function handleChangePassword(e) {
     setPassword(e.target.value);
-    setValidPassword(e.target.validity.valid);
+    setIsValidPassword(e.target.validity.valid);
     if (e.target.validity.valid) {
       setValidationMessagePassword('');
     } else { setValidationMessagePassword(e.target.validationMessage) }
@@ -32,17 +32,17 @@ function Login({ onLoginIn }) {
   React.useEffect(() => {
     setEmail('');
     setPassword('');
-    setValidPassword(true);
-    setValidLink(true);
+    setIsValidPassword(true);
+    setIsValidLink(true);
     setValidationMessagePassword('');
     setValidationMessageLink('');
-    setActiveSubmitButton(false);
+    setIsActiveSubmitButton(false);
   }, []);
 
   React.useEffect(() => {
     if (validationMessagePassword || validationMessageLink) {
-      setActiveSubmitButton(false);
-    } else { setActiveSubmitButton(true) }
+      setIsActiveSubmitButton(false);
+    } else { setIsActiveSubmitButton(true) }
   }, [validationMessagePassword, validationMessageLink]);
 
   return (
