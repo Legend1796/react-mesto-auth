@@ -7,10 +7,7 @@ function EditAvatarPopup({ isLoading, isOpen, onClose, onUpdateAvatar }) {
   const { values, handleChange, errors, isValid, resetErrors } = useFormAndValidation({})
 
   function handleSubmit() {
-
-    onUpdateAvatar({
-      avatar: values.link
-    });
+    onUpdateAvatar({ avatar: values.link });
   }
 
   React.useEffect(() => {
