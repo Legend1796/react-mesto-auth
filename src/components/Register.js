@@ -8,10 +8,14 @@ function Register({ onRegister }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    resetErrors({ email: '', password: '' });
     onRegister(values);
   }
 
+  React.useEffect(() => {
+    resetErrors({ email: '', password: '' });
+  }, []);
+  // Валидация отлично работает, однако я потерял кантроль над активацией кнопки сабмита...
+  // Ведь при открытии попапов валидация должна быть сброшена, а кнопка при этом не должна быть активна, иначе пользователь отправляет пустые поля на сервер
   return (
     <div className="login">
       <p className="login__title">Регистрация</p>

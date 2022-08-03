@@ -8,9 +8,12 @@ function Login({ onLoginIn }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    resetErrors({ email: '', password: '' });
     onLoginIn(values);
   }
+
+  React.useEffect(() => {
+    resetErrors({ email: '', password: '' });
+  }, []);
 
   return (
     <div className="login">
