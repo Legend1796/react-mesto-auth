@@ -80,9 +80,7 @@ function App() {
         handleCloseAllPopups();
       })
       .catch((err) => console.log(err))
-      .finally(() => {
-        setTimeout(() => setIsLoading(false), 2000);
-      })
+      .finally(() => setIsLoading(false))
   }
   function handleUpdateAvatar(newAvatar) {
     setIsLoading(true);
@@ -92,9 +90,7 @@ function App() {
         handleCloseAllPopups();
       })
       .catch((err) => console.log(err))
-      .finally(() => {
-        setTimeout(() => setIsLoading(false), 2000);
-      })
+      .finally(() => setIsLoading(false))
   }
   function handleCardLike(cardInfo) {
     const isLiked = cardInfo.likes.some(i => i._id === currentUser._id);
@@ -132,9 +128,7 @@ function App() {
         handleCloseAllPopups();
       })
       .catch((err) => console.log(err))
-      .finally(() => {
-        setTimeout(() => setIsLoading(false), 2000);
-      })
+      .finally(() => setIsLoading(false))
   }
 
   function onAsseccDenied() {
